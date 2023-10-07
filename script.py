@@ -4,6 +4,7 @@ import pyodbc
 from datetime import datetime
 import logging
 import zlib
+from decouple import config
 
 logging.basicConfig(filename='app.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -12,10 +13,10 @@ logging.basicConfig(filename='app.log', filemode='a', format='%(asctime)s - %(le
 
 # WooCommerce API Ayarlarıa
 WC_URL = "https://pureconcept.com.tr"
+WOOCOMMERCE_KEY = config("WOOCOMMERCE_KEY")
+WOOCOMMERCE_SECRET = config("WOOCOMMERCE_SECRET")
 WC_API_ENDPOINT = "/wp-json/wc/v3/orders"
-WC_API_KEY = "ck_7749bb3b61305b98fa2ce424eec3fa77d884d902"
-WC_API_SECRET = "cs_df99f09c43f8fee6921dba03e1e45efefa1473db"
-authString = b64encode(bytes(WC_API_KEY + ':' + WC_API_SECRET, 'utf-8')).decode('ascii')
+authString = b64encode(bytes(WOOCOMMERCE_KEY + ':' + WOOCOMMERCE_SECRET, 'utf-8')).decode('ascii')
 headers = {
     'accept': 'application/json',
     'Cache-Control': 'no-cache',
@@ -26,10 +27,10 @@ headers = {
 
 
 # MSSQL Bağlantı Ayarları
-MSSQL_SERVER = 'SQLSERV\SQL2019'
-MSSQL_DATABASE = 'MikroDB_V16_2022_01'
-MSSQL_USERNAME = 'sa'
-MSSQL_PASSWORD = 'Kumru!2022!'
+MSSQL_SERVER = config("MSSQL_SERVER")
+MSSQL_DATABASE = config("MSSQL_DATABASE")
+MSSQL_USERNAME = config("MSSQL_USERNAME")
+MSSQL_PASSWORD = config("MSSQL_PASSWORD")
 
 try:
     # WooCommerce'dan siparişleri al
